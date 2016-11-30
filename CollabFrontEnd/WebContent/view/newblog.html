@@ -1,0 +1,28 @@
+
+
+    <br><br>
+    <div data-ng-controller="forumController as ctrl">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-5">
+
+                <form  method="post" accept-charset="utf-8" name="blogForm" class="form" role="form">   
+                <h3>Create a new blog post</h3>
+                              
+                    <div class="form-group">          
+                    	<input type="text" name="blog_title" value="" class="form-control " style="min-height: 20px" data-ng-model="ctrl.blogDetails.blog_title" placeholder="Title"  required  />  
+                    </div>
+                    <br>
+                         
+                    <div class="form-group">
+                        <textarea class="form-control " placeholder="Post" data-ng-model="ctrl.blogDetails.content" style="min-height: 220px" required></textarea>
+                    </div>         
+                    
+                    <br>
+                        
+                    <button  data-ng-disabled="((blogForm.$invalid))" class="btn btn-lg btn-primary btn-block signup-btn" data-ng-click="ctrl.createBlog(ctrl.blogDetails)" type="submit">Post Blog</button><br>
+                </form>          
+            </div>
+           
+        </div>
+    </div>            

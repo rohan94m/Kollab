@@ -1,0 +1,63 @@
+  <div class="row content">
+    <div class="col-sm-3 sidenav">
+      
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#/blogview">Blogs</a></li>
+        <li><a href="#/userlist">People</a></li>
+        
+      </ul><br>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search Blog..">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button">
+            <span class="glyphicon glyphicon-search"></span>
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <div class="col-sm-9">
+	     <div data-ng-controller="forumController as fctrl">
+	      
+	      <h4><small>RECENT POSTS</small></h4>
+	      <hr>
+	      <div data-ng-repeat="thisblog in fctrl.latestbloglist">
+		      <h2>{{thisblog.blog_title}}</h2>
+		      <h5><span class="glyphicon glyphicon-time"></span>{{thisblog.date_created}}</h5>
+		      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
+		      <br><br>
+		  	    
+	     </div>
+	    
+	    
+	      <br><br>
+	      
+	   
+	    </div>
+    
+	      <div data-ng-controller="userController as uctrl">
+		      
+		      <h4><small>New Members</small></h4>
+		      <hr>
+		      <div class="col-sm-4" data-ng-repeat="thisuser in uctrl.latestulist">
+			      
+			      <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" name="aboutme" width="140" height="140" class="img-circle">
+			      <h2>{{thisuser.fullname}}</h2>
+			      
+			      <h5><span class="label label-danger">{{thisuser.role}}</span> <span class="label label-primary">Offline</span></h5><br>
+			      <br><br>
+			  	   
+		     </div>
+		    
+		    
+		      <br><br>
+	      
+	   
+	     </div>
+     </div>
+    
+    
+  </div>
+
+
+

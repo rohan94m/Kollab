@@ -1,0 +1,39 @@
+    <br>
+	
+    
+    
+    <div  data-ng-controller="forumController as fctrl"  >
+        
+        
+
+        
+        
+        <div  data-ng-controller="userController as uctrl"> <!-- - DISPLAYS LIST OF BLOGS if tempflag is 1 -->
+        
+	        <div class="row"  data-ng-init="blogsList=fctrl.fetchAllBlog()">
+					<br>
+					<br>
+					<br>
+			    <div class="col-sm-9"  data-ng-repeat="thisblog in fctrl.bloglist" data-ng-init="uname=uctrl.fetchUser(thisblog.user_id)">
+				      <h4><small><span class="glyphicon glyphicon-time"></span> {{thisblog.date_created}}</small></h4>
+				      <hr>
+				      <h2><a data-ng-click="fctrl.goToBlog(thisblog.blog_id)">{{thisblog.blog_title}}</a></h2>
+				      <h5><a data-ng-click="">{{uctrl.fetcheduser.fullname}}</a></h5>
+				      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
+				      
+				      <br><br>
+				      
+				</div>
+			</div>
+		
+	       
+    		</div> <!-- - DISPLAYS LIST OF BLOGS if tempflag is 1 -->
+    		
+    		
+    		
+    		
+    			
+    			
+		</div>
+
+

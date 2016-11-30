@@ -1,0 +1,55 @@
+<div  data-ng-controller="forumController as fctrl"  >
+	
+	
+
+	<div class="row" data-ng-controller="userController as uctrl">
+    <div class="col-sm-9" >
+   	
+   	  
+      
+      <h4><small>RECENT POSTS</small></h4>
+      <hr>
+      <h2>{{fctrl.fetchedblog.blog_title}}</h2>
+      <h5><span class="glyphicon glyphicon-time"></span> Post by {{fctrl.fetchedblog.user_id}}, {{fctrl.fetchedblog.date_created}}.</h5>
+      <h5><span class="label label-success">Lorem</span></h5><br>
+      <p>{{fctrl.fetchedblog.content}}</p>
+     	<br>
+     	
+     
+     
+      <h4>Leave a Comment:</h4>
+      <form role="form"  accept-charset="utf-8" name="commentForm" class="form">
+        <div class="form-group">
+          <textarea class="form-control" rows="3" data-ng-model="fctrl.commentDetails.comment_content" required></textarea>
+        </div>
+        
+        <button type="submit" data-ng-click="fctrl.createComment(fctrl.commentDetails)" class="btn btn-success">Submit</button>
+      </form>
+      <br><br>
+      
+      <p><span class="badge">2</span> Comments:</p><br>
+      
+      <div class="row" data-ng-repeat="thiscomment in fctrl.fetchedblog.comments">
+        <div class="col-sm-2 text-center">
+          <img src="bandmember.jpg" class="img-circle" height="65" width="65" alt="Avatar">
+        </div>
+        <div class="col-sm-10">
+          <h4>{{thiscomment.username}} <small>Sep 29, 2015, 9:12 PM</small></h4>
+         <p>{{thiscomment.comment_content}}</p>
+         <br>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>
+		
+
+
+
+
+
+
+
