@@ -150,6 +150,42 @@ public class UserController {
 	}
 	
 	
+	
+	@RequestMapping(value="/login",method=RequestMethod.POST)
+	public ResponseEntity<User> authenticate(@RequestBody User u )
+	{
+		try
+		{
+			User fetched= userService.authorizeUser(u);
+			if(fetched!=null)
+			{
+			return new ResponseEntity<User>(fetched,HttpStatus.ACCEPTED);
+			}
+			
+			else
+			{
+				return new ResponseEntity<User>(fetched,HttpStatus.CONFLICT);
+				
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			u=null;
+			return new ResponseEntity<User>(u,HttpStatus.CONFLICT);
+			
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	//MUST BE LOGGED IN
 	
 	@RequestMapping(value="/sendrequest/{id}",method=RequestMethod.GET)

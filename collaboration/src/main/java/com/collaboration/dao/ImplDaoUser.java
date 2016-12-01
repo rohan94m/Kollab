@@ -55,7 +55,7 @@ public class ImplDaoUser implements DaoUser {
 
 	public User getUserByEmail(String email) {
 	
-		String hql = "from UserDetails where emailid=" + "'" + email + "'" ;
+		String hql = "from User where emailid=" + "'" + email + "'" ;
 		Session session=factory.getCurrentSession();
 		
 		Query query= session.createQuery(hql);

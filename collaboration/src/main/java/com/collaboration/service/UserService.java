@@ -103,6 +103,26 @@ public class UserService {
 	}
 	
 	
+	public User authorizeUser(User u)
+	{
+		
+		
+		User fetched=userDao.getUserByEmail(u.getEmailid());
+		
+		System.out.println("Fetched password is "+fetched.getPassword());
+		System.out.println("typed password is "+u.getPassword());
+		if(fetched.getPassword().equals(u.getPassword())){
+			
+			return fetched;
+			
+		}
+			
+		else
+		{
+		return null;
+		}
+	}
+	
 	
 	
 	

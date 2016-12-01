@@ -1,4 +1,4 @@
-var app = angular.module('myApp', ['ngRoute'])
+var app = angular.module('myApp',[ 'ngRoute', 'ngCookies' ])
 
 .config(['$routeProvider',function($routeProvider){
 	$routeProvider.
@@ -12,6 +12,7 @@ var app = angular.module('myApp', ['ngRoute'])
 		controller:'userController'
 		
 	}).
+
 	when('/signup',{
 
 		templateUrl:'view/signup.html',

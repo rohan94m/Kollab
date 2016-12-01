@@ -1,4 +1,4 @@
-app.controller('userController',['$scope', 'userService','$location', function($scope, userService,$location){
+app.controller('userController',['$scope', 'userService','$location','$rootScope','$http','$cookieStore', function($scope, userService,$location,$rootScope,$http,$cookieStore){
 
 	console.log("User controller reached");
 
@@ -23,6 +23,13 @@ app.controller('userController',['$scope', 'userService','$location', function($
 	// Latest three users in this list
 	self.latestulist=[]; 
 	
+	self.flag="";
+	
+	
+	
+		$rootScope.currentuser=$cookieStore.get('currentuser');
+		console.log($rootScope.currentuser);
+
 
 	
 	self.createUser=function(user)
@@ -146,6 +153,42 @@ app.controller('userController',['$scope', 'userService','$location', function($
 		})
 
 	};
+	
+	
+	self.authenticate=function(user)
+	{
+		console.log("Authnticate reached");
+		userService
+		.authenticateUser(user)
+		.then(function(data){
+		console.log("Valid Credentials. Navigating to home page.");
+		$location.path('/home');
+		
+		
+		
+			
+		},function(){
+			
+			self.flag="loginnotreached";
+			console.log("Login failed");
+			
+			
+		})
+		
+		
+	};
+
+	self.logout = function() {
+				console.log("--> UserController : calling logout method.");
+				$rootScope.currentuser = null;
+				$cookieStore.remove('currentuser');
+				//UserService.logout();
+				alert("Succesfully Logged Out");
+				console.log("-->UserController : User Logged out.");
+				$location.path('/home');
+	};
+	
+	
 	
 	
 	
