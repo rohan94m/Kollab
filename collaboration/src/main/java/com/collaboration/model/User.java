@@ -31,13 +31,6 @@ public class User implements Serializable {
 	@Column
 	private String emailid;
 	
-	public int getUserId() {
-		return userId;
-	}
-
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
 
 	@Column
 	private String fullname;
@@ -64,9 +57,40 @@ public class User implements Serializable {
 	@Column
 	private int friendCount;
 	
+	@Column(length=500)
+	private String user_bio;
+	
+	@Column
+	private String user_status;
 	
 
 	
+	
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	
+
+	public String getUser_bio() {
+		return user_bio;
+	}
+
+	public void setUser_bio(String user_bio) {
+		this.user_bio = user_bio;
+	}
+
+	public String getUser_status() {
+		return user_status;
+	}
+
+	public void setUser_status(String user_status) {
+		this.user_status = user_status;
+	}
 
 	public int getFriendCount() {
 		return friendCount;

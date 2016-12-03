@@ -21,6 +21,10 @@ public interface DaoForum {
 	
 	void deleteBlog(int blogid);
 	
+	List<Blog> getUserBlogs(int userid);
+	
+	
+	
 	
 	
 }

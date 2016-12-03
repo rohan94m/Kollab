@@ -48,8 +48,7 @@ app.factory('forumService',['$http','$q',function($http,$q){
                 );
             },
          
-
-            
+           
 
             fetchBlog:function(blogid){
                 console.log("----In fetchBlog of Service----")
@@ -67,9 +66,37 @@ app.factory('forumService',['$http','$q',function($http,$q){
                     return $q.reject(errResponse);
 
 
-                })
+                }
+                );
 
             },
+
+
+            fetchMyBlogs: function(userid)
+            {
+
+                console.log("----In fetchMyBlogs of Service----")
+                console.log("userid is "+userid);
+                return $http.get('http://localhost:8081/collaboration/myblogs/'+userid)
+                .then(function(response){
+                        console.log("Obtained blogs list from server");
+                        return response.data;
+
+
+
+                },function(errResponse){
+
+                    console.error("Error communicating with server. Could not fetch blog");
+                    return $q.reject(errResponse);
+
+
+                });
+
+            },
+
+
+
+
             
 
             // COMMENT SERVICE

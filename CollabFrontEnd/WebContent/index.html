@@ -25,8 +25,8 @@
     </head>
     <body>
     
-    	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-         <div class="container-fluid" data-ng-controller="userController as uctrl">
+    	<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+         <div class="container" data-ng-controller="userController as uctrl">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" >
@@ -36,18 +36,18 @@
                     <span class="icon-bar"></span>
                 </button>
                 <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
-                <a class="navbar-brand" href="#/" style="color:black" ><em>Collab</em></a>
+                <a class="navbar-brand" href="#/"  ><em>Kollab</em></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             	<div class="container">
             		<ul class="nav  navbar-nav navbar-right">
          
-			          <li><a  href="#/explore" style="color:black" >Explore</a></li>
-			          <li><a href="#/profile" style="color:black" data-ng-show="currentuser">{{currentuser.username}}</a></li>
-			          <li><a href="#/logout" style="color:black" data-ng-show="currentuser" data-ng-click="uctrl.logout()">Logout</a></li>
-			          <li><a href="#/login" style="color:black" data-ng-hide="currentuser">Login</a></li>
-			          <li><a href="#/signup" style="color:black" data-ng-hide="currentuser" >Signup</a></li>
+			          <li><a  href="#/explore"  >Explore</a></li>
+			          <li><a href="#/myprofile"  data-ng-show="currentuser">{{currentuser.username}}</a></li>
+			          <li><a href="#/logout" data-ng-show="currentuser" data-ng-click="uctrl.logout()">Logout</a></li>
+			          <li><a href="#/login"  data-ng-hide="currentuser">Login</a></li>
+			          <li><a href="#/signup" data-ng-hide="currentuser" >Signup</a></li>
 			          
           
         			</ul>

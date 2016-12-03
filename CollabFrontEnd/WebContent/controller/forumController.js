@@ -1,17 +1,27 @@
-app.controller('forumController',['$scope', 'forumService','dummyService','$location','$routeParams', function($scope, forumService,dummyService,$location,$routeParams){
+app.controller('forumController',['$scope', 'forumService','dummyService','$location','$routeParams','$rootScope', 
+
+				function($scope, forumService,dummyService,$location,$routeParams,$rootScope){
 
 	console.log("Forum controller reached");
 
 	var self=this;
-	self.blogDetails={"blog_id":null,"blog_title":"","content":"","date_created":"","status":"Pending","reason":"Not verified","user_id":null,"author_name":""};
+	self.blogDetails={"blog_id":null,"blog_title":"","content":"","date_created":"", "user_id":null,"author_name":"",
+					  "category":"","comment_count":0,"shortcontent":""};
 	
 	self.commentDetails={"commentId":null,"comment_content":"","upvotes":0,"downvotes":0,"user_id":null,"username":"",
-			"blog":{"blog_id":null} };
+			"date_created":"", "blog":{"blog_id":null} };
 	
-	self.fetchedblog={"blog_id":null,"blog_title":"","content":"","date_created":"","status":"Pending","reason":"Not verified","user_id":null,"author_name":""};
+	self.fetchedblog={"blog_id":null,"blog_title":"","content":"","date_created":"","user_id":null,
+						"author_name":"","category":"","comment_count":0,"shortcontent":""};
 	
 	self.bloglist=[];
+
+	self.myblogslist=[];
+
+
 	self.commentlist=[];
+
+
 	self.blogid=0;
 	
 	
@@ -25,8 +35,9 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 
 	self.createBlog=function(blog)
 	{
-		blog.user_id=1;
-		blog.author_name='Rohan';
+		//Set in back-end through logged in session object
+		blog.user_id=null;
+		blog.author_name='';
 
 		console.log("---- createBlog in userController reached ----")
 		console.log(blog);
@@ -37,9 +48,11 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 	
 			console.log("Blog saved succesfully");
 			
+			
 			self.reset();
-			self.flag="createdblogsuccess";
-			console.log(self.flag);
+			$location.path("/explore");
+			
+			
 			
 	
 	
@@ -121,9 +134,13 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 	self.reset=function()
 	{
 	
-			self.blogDetails={"blog_id":null,"blog_title":"","content":"","date_created":"","status":"Pending","reason":"Not verified","user_id":null};
+			self.blogDetails={"blog_id":null,"blog_title":"","content":"","date_created":"",
+					"user_id":null,"author_name":"","category":"","comment_count":0,"shortcontent":""};
 	    	
 	        $scope.blogForm.$setPristine();
+	        alert("Blog Posted");
+	        
+	       
 	   
 	};
 
@@ -137,7 +154,7 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 	}
 
 
-	self.fetchBlog=function()
+	self.fetchBlogFromRouteParams=function()
 	{
 		self.blogid=$routeParams.blogid;
 		console.log("Fetching blog with id "+self.blogid);
@@ -151,19 +168,66 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 			
 		},function(){
 			
-			console.log("COuldnt fetch to controller")
+			console.log("Couldnt fetch to controller");
 			
 		})
 		
 		
 	};
+	
+	
+	
+	
+	self.fetchBlog=function(blogid)
+	{
+		console.log("Fetching blog with id "+blogid);
+		forumService.
+		fetchBlog(blogid)
+		.then(function(response){
+			
+			self.fetchedblog=response;
+			console.log(self.fetchedblog);
+			
+			
+		},function(){
+			
+			console.log("Couldnt fetch to controller");
+			
+		});
+		
+		
+		
+		
+	};
+
+
+	self.fetchMyBlogs=function(userid)
+	{
+		forumService
+		.fetchMyBlogs(userid)
+		.then(function(data){
+
+			self.myblogslist=data;
+
+		},function(){
+
+			console.log("This user doesnt have any blogs");
+
+		})
+
+
+
+	}
+
 
        self.createComment=function(comment){
     	   
     
     	console.log(self.fetchedblog.blog_id);
-    	comment.user_id=1; // Set from rootscope
-    	comment.username="Rohan"; // Set from rootscope
+    	
+    	//Set in back-end through logged in session object
+    	comment.user_id=null; 
+    	comment.username="";
         console.log("---- createComment() in controller reached ----");
         console.log(comment);
          forumService
@@ -172,7 +236,7 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
                 function(response){
                     console.log("Comment added");
                     self.flag="commentcreatesuccess";
-                    $location.path(self.currentPath);
+                    self.fetchBlog(self.fetchedblog.blog_id);
                     
                 }, 
                 function(errResponse){
@@ -196,7 +260,14 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 	if(self.currentPath.startsWith('/blog/'))
 	{
 	
-		self.fetchBlog();
+		self.fetchBlogFromRouteParams();
+	}
+
+    
+	if(self.currentPath=='/myprofile')
+	{
+		self.fetchMyBlogs($rootScope.currentuser.userid);
+
 	}
 
 

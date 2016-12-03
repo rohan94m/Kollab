@@ -1,0 +1,101 @@
+
+  
+<div class="text-center" data-ng-controller="userController as uctrl">    
+  
+  <div class="row">
+    <div class="col-sm-3 well">
+    	
+      <div class="well">
+      	<a href="#" style="float:right"><span class="glyphicon glyphicon-pencil"></span></a>
+      	<br>
+        <br>
+        <img src="resources/img/avatar.png" class="img-circle" height="75" width="75" alt="Avatar">
+        <h4>{{uctrl.fetcheduser.fullname}}</h4>
+        <br>
+        <p>
+          <span class="label label-default">{{uctrl.fetcheduser.role}}</span>
+          <span class="label label-primary">{{uctrl.fetcheduser.isOnline}}</span>
+          <div data-ng-if="$root.currentuser">
+          
+          </div>          
+        
+      </div>
+      <div class="well">
+        <h3><a href="#"><strong>Bio</strong></a></h3>
+        <p>{{uctrl.fetcheduser.user_bio}}</p>
+        <div data-ng-if="uctrl.fetcheduser.user_bio==null"><p>Please edit details to add a Bio</p></div>
+        <br/><br/>
+        <div data-ng-if="uctrl.fetcheduser.user_bio==''"><br/><br/><br/><br/></div>
+      </div>
+        <div class="well fade in">
+       
+        <h3><strong>Friends</strong></h3>
+        <h4>90</h4>
+      </div>
+     
+    </div>
+    <div class="col-sm-8">
+    
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="well text-left">
+            <div class="">
+              <h3 style=" font-family:Lucida Sans Unicode , Lucida Grande, sans-serif " ><q>{{uctrl.fetcheduser.user_status}}</q></h3>
+              
+                 
+            </div>
+          </div>
+        </div>
+      </div>
+      
+     
+	<div class="row">
+      <form  data-ng-submit="uctrl.statusUpdate(uctrl.userDetails)">
+      <div class="form-group col-sm-10">
+ <input type="text" class="form-control" ng-model="uctrl.userDetails.user_status" placeholder="Welcome {{uctrl.fetcheduser.fullname}}! Update your current status"> 
+          
+      </div>
+      
+         <div class="form-group col-sm-2">
+         
+          <button class="btn btn-sm" type="submit">Update Status</button>
+      </div>
+      
+      </form>
+      <br><br><br><br><br><br><br>
+   </div>
+   <div class="row">
+   <h4 >MY BLOGS</h4><br>
+   </div>
+      <div data-ng-controller="forumController as fctrl">
+        <div class="row" data-ng-repeat="thisblog in fctrl.myblogslist">
+          <div class="col-sm-2">
+            
+             <br>
+             <a href="" data-ng-click="fctrl.goToBlog(thisblog.blog_id)"><img src="resources/img/blogicon.png" class="" height="55" width="55" alt="Avatar"></a>
+             <br><br>
+            
+          </div>
+          <div class="col-sm-10">
+            <div class="well">
+              <p>{{thisblog.shortcontent}}</p>
+            </div>
+          </div>
+        </div> 
+      </div>    
+      
+      <br>
+      <br>
+      
+         <a href="#" class="btn btn-info btn-lg">
+          <span class="glyphicon glyphicon-plus-sign"></span> Create a new Blog
+        </a>
+      
+      
+    </div>
+
+
+
+
+  </div>
+</div>

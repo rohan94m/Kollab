@@ -1,11 +1,13 @@
-app.controller('userController',['$scope', 'userService','$location','$rootScope','$http','$cookieStore', function($scope, userService,$location,$rootScope,$http,$cookieStore){
+app.controller('userController',['$scope', 'userService','$location','$rootScope',
+				'$http','$cookieStore','$routeParams', function($scope, userService,$location,$rootScope,$http,$cookieStore,$routeParams){
 
 	console.log("User controller reached");
 
 	var self=this;
 	
 	// Signup form model
-	self.userDetails={"userId":null,"emailid":"","fullname":"","password":"","mobileno":"","isOnline":"no","accountstatus":"pending","reason":"awaiting confirmation","role":"","friendCount":0};
+	self.userDetails={"userId":null,"emailid":"","fullname":"","password":"","mobileno":"",
+	"isOnline":"offline","accountstatus":"valid","reason":"none","role":"","friendCount":0,"user_bio":"","user_status":""};
 	
 	
 	// All users in this list
@@ -13,7 +15,8 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	
 	
 	//Single user obtained 
-	self.fetcheduser={"userId":null,"emailid":"","fullname":"","password":"","mobileno":"","isOnline":"no","accountstatus":"pending","reason":"awaiting confirmation","role":"","friendCount":0};
+	self.fetcheduser={"userId":null,"emailid":"","fullname":"","password":"",
+	"mobileno":"","isOnline":"offline","accountstatus":"valid","reason":"none","role":"","friendCount":0,"user_bio":"","user_status":""};
 	
 	
 	//Depending on this path, controller functions are called
@@ -23,13 +26,16 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	// Latest three users in this list
 	self.latestulist=[]; 
 	
-	self.flag="";
-	
-	
-	
-		$rootScope.currentuser=$cookieStore.get('currentuser');
-		console.log($rootScope.currentuser);
 
+	
+	
+		if($cookieStore.get('currentuser'))
+			{
+				$rootScope.currentuser=$cookieStore.get('currentuser');
+				console.log($rootScope.currentuser);
+				
+				
+			}
 
 	
 	self.createUser=function(user)
@@ -42,17 +48,20 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 		.then(function(){
 	
 			console.log("user saved succesfully");
+			alert("Registered succesfully");
 			
 			self.reset();
-			self.flag="createdusersuccess";
+			
+			$location.path("/login");
+			
 			
 	
 	
 		},function(){
 	
 			console.error("user not saved!")
-			self.flag='createfailed';
-			console.log(self.flag);
+			
+			alert("Could not create your account");
 			
 	
 		});
@@ -127,7 +136,8 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	{
 	
 	    	self.userDetails={"userId":null,"emailid":"","fullname":"",
-			"password":"","mobileno":"","isOnline":"no","accountstatus":"pending","reason":"awaiting confirmation","role":"","friendCount":0};
+			"password":"","mobileno":"","isOnline":"offline","accountstatus":"valid","reason":"none","role":"","friendCount":0,"user_bio":"",
+			"user_status":""};
 	        $scope.userForm.$setPristine();
 	   
 	};
@@ -147,13 +157,58 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 		},function(){
 
 			self.fetcheduser=null;
-			console.log("Couldnt get blog ");
+			console.log("Couldnt get user ");
 
 
-		})
+		});
 
 	};
 	
+	
+	self.fetchUserFromRouteParams=function()
+	{
+		
+		self.userid=$routeParams.userid;
+		console.log("Fetching user with id "+self.userid);
+		userService.
+		fetchUser(self.userid)
+		.then(function(response){
+			
+			self.fetcheduser=response;
+			console.log("Fetched user through Params is");
+			console.log(self.fetcheduser);
+			
+			
+			
+			
+		},function(){
+			
+			console.log("Couldnt fetch to controller");
+			
+		})
+	}
+	
+	
+	
+	self.goToUser=function(idval)
+	{
+		
+		console.log("usert id at goToUser is "+idval);
+		$location.path('/user/'+idval);
+	}
+	
+	if(self.currentPath.startsWith('/user/'))
+	{
+	
+		self.fetchUserFromRouteParams();
+	}
+	
+	
+	
+	
+
+	// must be logged in
+
 	
 	self.authenticate=function(user)
 	{
@@ -163,9 +218,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 		.then(function(data){
 		console.log("Valid Credentials. Navigating to home page.");
 		$location.path('/home');
-		
-		
-		
+				
 			
 		},function(){
 			
@@ -182,12 +235,47 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 				console.log("--> UserController : calling logout method.");
 				$rootScope.currentuser = null;
 				$cookieStore.remove('currentuser');
-				//UserService.logout();
-				alert("Succesfully Logged Out");
-				console.log("-->UserController : User Logged out.");
+				userService.logout()
+				.then(function(){
+					console.log("LoggedOut");
+					alert("Succesfully Logged Out");
+					console.log("-->UserController : User Logged out.");
+				},function(){
+					
+					console.log("Logout Failed");
+				})
+				
+				
 				$location.path('/home');
 	};
 	
+	
+
+
+	self.statusUpdate=function(user)
+	{
+		self.fetcheduser.user_status=user.user_status;
+	
+		
+		userService.updateUser(self.fetcheduser)
+		.then(function(data){
+			
+			console.log(data.user_status);
+			self.fetcheduser.user_status="";
+			self.userDetails.user_status="";
+			self.fetcheduser=data;
+			
+		},function(data){
+			self.fetcheduser.user_status="";
+			self.userDetails.user_status="";
+			
+		})
+		
+		
+
+		
+
+	}
 	
 	
 	
@@ -215,6 +303,14 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			self.fetchAllUser();
 		}
 
+		
+
+		if(self.currentPath==('/myprofile'))
+		{
+			//Must Be Logged in
+			self.fetchUser($rootScope.currentuser.userid);
+
+		}
 
 
 

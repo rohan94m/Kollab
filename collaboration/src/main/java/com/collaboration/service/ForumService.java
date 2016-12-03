@@ -54,6 +54,12 @@ public class ForumService {
 		return forumDao.getAllBlogs();
 	}
 	
+	public List<Blog> getUserBlogs(int userid)
+	{
+	
+			return forumDao.getUserBlogs(userid);
+	}
+	
 	
 
 }

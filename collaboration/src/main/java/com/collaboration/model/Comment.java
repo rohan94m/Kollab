@@ -42,6 +42,18 @@ public class Comment implements Serializable {
 	@Column
 	private String username;
 	
+	@Column
+	private String date_created;
+	
+	
+	public String getDate_created() {
+		return date_created;
+	}
+
+	public void setDate_created(String date_created) {
+		this.date_created = date_created;
+	}
+
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name ="blog_id")

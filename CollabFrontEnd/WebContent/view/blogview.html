@@ -14,15 +14,24 @@
 					<br>
 					<br>
 					<br>
-			    <div class="col-sm-9"  data-ng-repeat="thisblog in fctrl.bloglist" data-ng-init="uname=uctrl.fetchUser(thisblog.user_id)">
+			    <div class="col-sm-9"  data-ng-repeat="thisblog in fctrl.bloglist">
+				      
+				      
+				        
+				    
 				      <h4><small><span class="glyphicon glyphicon-time"></span> {{thisblog.date_created}}</small></h4>
-				      <hr>
-				      <h2><a data-ng-click="fctrl.goToBlog(thisblog.blog_id)">{{thisblog.blog_title}}</a></h2>
-				      <h5><a data-ng-click="">{{uctrl.fetcheduser.fullname}}</a></h5>
-				      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
+				      <hr>      
+				      				     
+				      <h2 ><a href="" data-ng-click="fctrl.goToBlog(thisblog.blog_id)">{{thisblog.blog_title}}</a></h2>
+				    
+				
+				      <h5><a data-ng-click="">{{thisblog.author_name}}</a></h5>
+				      <h5><span class="label label-danger">{{thisblog.category}}</span> <span class="label label-primary">{{thisblog.date_created}}</span></h5><br>
+				      <br>
+				      <h4>{{thisblog.shortcontent}}</h4>
 				      
 				      <br><br>
-				      
+				      </div>
 				</div>
 			</div>
 		
@@ -34,6 +43,6 @@
     		
     			
     			
-		</div>
+	
 
 

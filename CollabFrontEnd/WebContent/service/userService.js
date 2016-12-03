@@ -67,8 +67,8 @@ app.factory('userService',['$http','$q','$rootScope','$cookieStore',function($ht
 
             },
          
-        updateUser: function(user, id){
-                return $http.put('http://localhost:8081/collaboration/user/'+id, user)
+        updateUser: function(user){
+                return $http.put('http://localhost:8081/collaboration/user/', user)
                 .then(
                         function(response){
                             return response.data;
@@ -86,13 +86,14 @@ app.factory('userService',['$http','$q','$rootScope','$cookieStore',function($ht
             	return $http.post('http://localhost:8081/collaboration/login', user)
             	.then(function(response){
 
-                        if(response.data==null){
+                        if(response.data.emailid=='Invalid'){
                         
                         console.log("Wrong credentials") ;  
                         alert("Email or Password do not match!");
                     }
                     else
                         {
+                    	console.log("Authenticated");
                     
                     $rootScope.currentuser={ "userid":response.data.userId, "username":response.data.fullname,
                     						"role":response.data.role };
@@ -119,7 +120,7 @@ app.factory('userService',['$http','$q','$rootScope','$cookieStore',function($ht
             logout: function() {
                 console.log("--> UserService : calling 'logout' method.");
                 return $http
-                            .get(BASE_URL+'/user/logout')
+                            .get('http://localhost:8081/collaboration/logout')
                             .then(function(response) {
                                 return response.data;
                             },

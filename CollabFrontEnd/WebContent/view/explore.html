@@ -23,7 +23,7 @@
 	      <hr>
 	      <div data-ng-repeat="thisblog in fctrl.latestbloglist">
 		      <h2>{{thisblog.blog_title}}</h2>
-		      <h5><span class="glyphicon glyphicon-time"></span>{{thisblog.date_created}}</h5>
+		      <h5><span class="glyphicon glyphicon-time"></span>&nbsp {{thisblog.date_created}}</h5>
 		      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
 		      <br><br>
 		  	    
@@ -41,8 +41,8 @@
 		      <hr>
 		      <div class="col-sm-4" data-ng-repeat="thisuser in uctrl.latestulist">
 			      
-			      <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" name="aboutme" width="140" height="140" class="img-circle">
-			      <h2>{{thisuser.fullname}}</h2>
+			      <a href="" data-ng-click="uctrl.goToUser(thisuser.userId)"><img src="resources/img/avatar.png" name="aboutme" width="140" height="140" class="img-circle"></a>
+			      <h2><a href="" data-ng-click="uctrl.goToUser(thisuser.userId)">{{thisuser.fullname}}</a></h2>
 			      
 			      <h5><span class="label label-danger">{{thisuser.role}}</span> <span class="label label-primary">Offline</span></h5><br>
 			      <br><br>

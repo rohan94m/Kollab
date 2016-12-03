@@ -12,13 +12,12 @@ public class FrontController {
 	public String home()
 	{
 		
-		// Blog, User, Comment Works Fine
-		// Friendship to be tested
+		
 	
 		
 		
 		
-		
+	
 		
 		
 		

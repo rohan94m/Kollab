@@ -97,6 +97,20 @@ public class ImplDaoForum implements DaoForum{
 	}
 	
 	
+	public List<Blog> getUserBlogs(int userid)
+	{
+		Session session;
+		session= factory.getCurrentSession();
+		String hql="from Blog where user_id="+userid;
+		Query query=session.createQuery(hql);
+		@SuppressWarnings("unchecked")
+		List<Blog> list=(List<Blog>)query.list();
+		return list;
+		
+		
+	}
+	
+	
 
 
 }

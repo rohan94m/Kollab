@@ -47,13 +47,15 @@ public class Blog implements Serializable {
 	private List<Comment> comments;
 	
 	@Column
+	private int comment_count;
+	
+
+
+
+	@Column
 	private String date_created;
 	
-	@Column
-	private String status;
 	
-	@Column
-	private String reason;
 	
 	
 	@Column
@@ -61,9 +63,50 @@ public class Blog implements Serializable {
 	
 	@Column
 	private String author_name;
+	
+	@Column
+	private String category;
+	
+	
+	@Column
+	private String shortcontent;
+	
+	
+	
+	
+	
+	
+	public String getShortcontent() {
+		return shortcontent;
+	}
+
+
+	public void setShortcontent(String shortcontent) {
+		this.shortcontent = shortcontent;
+	}
+
+
+	public int getComment_count() {
+		return comment_count;
+	}
+
+
+	public void setComment_count(int comment_count) {
+		this.comment_count = comment_count;
+	}
 
 
 
+
+
+	public String getCategory() {
+		return category;
+	}
+
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 
 	public String getAuthor_name() {
@@ -117,25 +160,6 @@ public class Blog implements Serializable {
 		this.date_created = date_created;
 	}
 
-
-	public String getStatus() {
-		return status;
-	}
-
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-
-	public String getReason() {
-		return reason;
-	}
-
-
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
 
 
 	

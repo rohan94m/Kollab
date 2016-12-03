@@ -109,22 +109,33 @@ public class UserService {
 		
 		User fetched=userDao.getUserByEmail(u.getEmailid());
 		
-		System.out.println("Fetched password is "+fetched.getPassword());
-		System.out.println("typed password is "+u.getPassword());
-		if(fetched.getPassword().equals(u.getPassword())){
-			
-			return fetched;
-			
-		}
-			
-		else
+		if(fetched!=null)
 		{
-		return null;
+		
+			System.out.println("Fetched password is "+fetched.getPassword());
+			System.out.println("typed password is "+u.getPassword());
+			if(fetched.getPassword().equals(u.getPassword())){
+				
+				return fetched;
+				
 		}
+			else
+			{
+				u.setEmailid("Invalid");
+				return u;
+			}
+			
+		}
+				
+				u.setEmailid("Invalid");
+				return u;
+	
 	}
 	
-	
-	
+	public void updateUser(User u)
+	{
+		 userDao.updateUser(u);
+	}
 	
 	
 	

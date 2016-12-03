@@ -18,6 +18,8 @@ public interface DaoUser {
 	
 	void deleteUser(Integer id);
 	
+	void updateUser(User u);
+	
 	
 	
 

@@ -1,10 +1,10 @@
-<div data-ng-controller="userController as ctrl" data-ng-init="userList=ctrl.fetchAllUser()"  >
+<div data-ng-controller="userController as uctrl" data-ng-init="userList=ctrl.fetchAllUser()"  >
 	
 	<br>
 	<br>
-	<div data-ng-repeat="i in ctrl.ulist ">
+	<div data-ng-repeat="i in uctrl.ulist ">
 		<div class="col-sm-4 ">
-			<a href="#/userlist#aboutModal" data-toggle="modal" data-target="#myModal"><img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" name="aboutme" width="120" height="120" class="img-circle"></a>
+			<a href="" data-ng-click="uctrl.goToUser(i.userId)"><img src="resources/img/avatar.png" name="aboutme" width="120" height="120" class="img-circle"></a>
 			<h3>{{i.fullname}}</h3>
 			
 			<br>
@@ -13,7 +13,7 @@
 		</div>
 	</div>
 	
-	<div  data-ng-if="ctrl.ulist==null">
+	<div  data-ng-if="uctrl.ulist==null">
 		<h3>No users at the moment </h3>
 	</div> 
 	       

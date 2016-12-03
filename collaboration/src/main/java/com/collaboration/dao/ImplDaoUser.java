@@ -86,6 +86,15 @@ public class ImplDaoUser implements DaoUser {
 		return u;
 		
 	}
+	
+	public void updateUser(User u)
+	
+	{
+		
+		Session session=factory.getCurrentSession();
+		session.update(u);
+		
+	}
 
 	
 

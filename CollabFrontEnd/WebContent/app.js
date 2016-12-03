@@ -27,6 +27,11 @@ var app = angular.module('myApp',[ 'ngRoute', 'ngCookies' ])
 
 
 	}).
+	
+	when('/user/:userid/',{
+        controller: 'forumController',
+        templateUrl: 'view/profile.html'
+    }).
 
 	when('/explore',{
 
@@ -36,6 +41,17 @@ var app = angular.module('myApp',[ 'ngRoute', 'ngCookies' ])
 
 
 	}).
+	
+	when('/myprofile',{
+
+		templateUrl:'view/myprofile.html',
+		controller:'userController'
+
+
+
+	}).
+
+	
 
 	when('/blogview',{
 		templateUrl:'view/blogview.html',

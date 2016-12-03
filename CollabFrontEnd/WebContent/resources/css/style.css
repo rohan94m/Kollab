@@ -2,12 +2,13 @@
 /* HOMEPAGE STYLING  */
 .navbar{
 	min-height: 60px;
-    background-color:#E6E1DB;
-    border-color:#E6E1DB;
+    
     
      
 
 }
+
+a { color: inherit; } 
 
 .navbar-header {
     text-transform: uppercase;

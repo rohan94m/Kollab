@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.collaboration.model.Blog;
 import com.collaboration.model.Comment;
 import com.collaboration.model.ErrorDetails;
+import com.collaboration.model.User;
 import com.collaboration.service.ForumService;
 
 @RestController
@@ -41,16 +44,28 @@ public class ForumController {
 	}
 	
 	@RequestMapping(value="/blog", method=RequestMethod.POST)
-	public ResponseEntity<ErrorDetails> saveNewBlog(@RequestBody Blog blog)
+	public ResponseEntity<ErrorDetails> saveNewBlog(@RequestBody Blog blog,HttpSession session)
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String valnow = dateFormat.format(new Date());
 		System.out.println("Date is "+valnow);
 		blog.setDate_created(valnow);
 		blog.setComments(null);
-		blog.setUser_id(1);
+		if(blog.getContent().length()>30)
+		{
+			blog.setShortcontent(blog.getContent().substring(0, 30)+" ...");
+		
+		}
+		else
+		{
+			blog.setShortcontent(blog.getContent());
+		}
+		
 		try
 		{
+			User u=(User) session.getAttribute("currentuser");
+			blog.setAuthor_name(u.getFullname());
+			blog.setUser_id(u.getUserId());
 			forumService.saveBlog(blog);
 			ErrorDetails e=new ErrorDetails();
 			e.setErrorcode("200");
@@ -97,18 +112,35 @@ public class ForumController {
 	}
 	
 	@RequestMapping(value="/comment/{blogid}",method=RequestMethod.POST)
-	public ResponseEntity<Void> addComment(@RequestBody Comment c, @PathVariable("blogid") Integer blogid)
+	public ResponseEntity<Void> addComment(@RequestBody Comment c, @PathVariable("blogid") Integer blogid,HttpSession session)
 	{
 		System.out.println(blogid);
 		Blog b=new Blog();
 		b.setBlog_id(blogid);
 		c.setBlog(b);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		String valnow = dateFormat.format(new Date());
+		c.setDate_created(valnow);
 		
 		
-		System.out.println("COmment is"+c.getComment_content()+"by user "+c.getUser_id()+" "+c.getUsername());
+		
+		
+		
 		try
 		{
+			
+			
+			User u=(User) session.getAttribute("currentuser");
+			c.setUser_id(u.getUserId());
+			c.setUsername(u.getFullname());
+			System.out.println("COmment is"+c.getComment_content()+"by user "+c.getUser_id()+" "+c.getUsername());
 			forumService.addComment(c);
+			
+			
+			Blog fetchblog=forumService.getBlog(blogid);
+			fetchblog.setComment_count(fetchblog.getComment_count()+1);
+			forumService.editBlog(fetchblog);
+			
 			return new ResponseEntity<Void>(HttpStatus.CREATED);
 		}
 		
@@ -167,6 +199,31 @@ public class ForumController {
 			return new ResponseEntity<List<Blog>>(list, HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@RequestMapping(value="/myblogs/{userid}",method=RequestMethod.GET)
+	public ResponseEntity<List<Blog>> getUserBlogs(@PathVariable("userid") Integer userid)
+	{
+		
+		try
+		{
+		List<Blog> list=forumService.getUserBlogs(userid);
+		
+		return new ResponseEntity<List<Blog>>(list,HttpStatus.OK);
+		
+		}
+		
+		catch(Exception e)
+		{
+			List<Blog> list=null;
+			return new ResponseEntity<List<Blog>>(list,HttpStatus.CONFLICT);
+			
+			
+		}
+		
+		
+		
+	}
+	
 	
 	
 	

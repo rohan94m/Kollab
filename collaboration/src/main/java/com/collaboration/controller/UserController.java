@@ -52,6 +52,35 @@ public class UserController {
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 	
+	
+	@RequestMapping(value="/user",method=RequestMethod.PUT)
+	public ResponseEntity<User> updateUser(@RequestBody User u)
+	{
+		
+		
+		try
+		{
+			userService.updateUser(u);
+			
+			return new ResponseEntity<User>(u,HttpStatus.OK);
+		}
+		
+		catch(Exception e)
+		{
+			
+			u=null;
+			
+			return new ResponseEntity<User>(u,HttpStatus.CONFLICT);
+			
+			
+		}
+		
+	}
+	
+	
+	
+	
+	
 	@RequestMapping(value= "/user", method = RequestMethod.GET)
 	public ResponseEntity<List<User>> list() 
 	{	
@@ -152,21 +181,30 @@ public class UserController {
 	
 	
 	@RequestMapping(value="/login",method=RequestMethod.POST)
-	public ResponseEntity<User> authenticate(@RequestBody User u )
+	public ResponseEntity<User> authenticate(@RequestBody User u,HttpSession session )
 	{
 		try
 		{
 			User fetched= userService.authorizeUser(u);
-			if(fetched!=null)
+			if(fetched.getEmailid().equals("Invalid"))
 			{
-			return new ResponseEntity<User>(fetched,HttpStatus.ACCEPTED);
+				fetched=u;
+				fetched.setEmailid("Invalid");
+				fetched.setPassword("Invalid");
+				
 			}
 			
 			else
 			{
-				return new ResponseEntity<User>(fetched,HttpStatus.CONFLICT);
+				
+				System.out.println("Session set for "+fetched.getFullname());
+				session.setAttribute("currentuser", fetched);
+				
 				
 			}
+			
+			return new ResponseEntity<User>(fetched,HttpStatus.OK);
+			
 		}
 		catch(Exception e)
 		{
@@ -176,6 +214,14 @@ public class UserController {
 			
 		}
 		
+	}
+	
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public ResponseEntity<Void> logout(HttpSession session)
+	{
+		System.out.println("Session is invalidated");
+		session.invalidate();
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 	
 	
