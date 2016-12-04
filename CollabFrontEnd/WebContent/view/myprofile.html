@@ -58,12 +58,23 @@
       
          <div class="form-group col-sm-2">
          
-          <button class="btn btn-sm" type="submit">Update Status</button>
+          <button class="btn btn-sm" type="submit" data-ng-disabled="uctrl.fetcheduser.accountstatus=='Invalid' || uctrl.fetcheduser.accountstatus=='Pending'">Update Status</button>
       </div>
       
       </form>
       <br><br><br><br><br><br><br>
    </div>
+   
+   <div class="row" data-ng-if="uctrl.fetcheduser.accountstatus=='Invalid' || uctrl.fetcheduser.accountstatus=='Pending' ">
+   
+   		<br><br>
+   		<h3>Please Contact Admin ! Your account activation is {{uctrl.fetcheduser.accountstatus}}</h3>
+   		<br><br>
+   
+   </div>
+   
+   
+   
    <div class="row">
    <h4 >MY BLOGS</h4><br>
    </div>
@@ -87,7 +98,7 @@
       <br>
       <br>
       
-         <a href="#" class="btn btn-info btn-lg">
+         <a href="#" class="btn btn-info btn-lg" data-ng-disabled="uctrl.fetcheduser.accountstatus=='Invalid' || uctrl.fetcheduser.accountstatus=='Pending' ">
           <span class="glyphicon glyphicon-plus-sign"></span> Create a new Blog
         </a>
       

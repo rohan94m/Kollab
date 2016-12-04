@@ -34,12 +34,13 @@
 	      
 	   
 	    </div>
+	    <br><br><br><br><br>
     
 	      <div data-ng-controller="userController as uctrl">
 		      
 		      <h4><small>New Members</small></h4>
 		      <hr>
-		      <div class="col-sm-4" data-ng-repeat="thisuser in uctrl.latestulist">
+		      <div class="col-sm-4" data-ng-repeat="thisuser in uctrl.latestulist" data-ng-hide="thisuser.accountstatus=='Pending' || thisuser.accountstatus=='Invalid'" >
 			      
 			      <a href="" data-ng-click="uctrl.goToUser(thisuser.userId)"><img src="resources/img/avatar.png" name="aboutme" width="140" height="140" class="img-circle"></a>
 			      <h2><a href="" data-ng-click="uctrl.goToUser(thisuser.userId)">{{thisuser.fullname}}</a></h2>

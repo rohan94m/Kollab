@@ -1,0 +1,43 @@
+ <div class="row" data-ng-controller="userController as uctrl">
+  
+  
+  
+  <h2>Manage Users :</h2>
+  <br><br>
+   <div class="table-response">
+   <table class="table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Email</th>
+							<th>Role</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+				
+				
+							<tr data-ng-repeat="thisuser in uctrl.ulist" class="success" data-ng-hide="thisuser.userId==$root.currentuser.userid">
+								<td>{{thisuser.userId}}</td>
+								<td>{{thisuser.fullname}}</td>
+								<td>{{thisuser.emailid}}</td>
+								<td>{{thisuser.role}}</td>
+								<td>{{thisuser.accountstatus}}</td>			
+													
+								<td><button data-ng-show="thisuser.accountstatus=='Pending' || thisuser.accountstatus=='Invalid'" type="button" data-ng-click="uctrl.acceptUser(thisuser)" class="btn btn-warning btn-sm">ACCEPT</button></td>
+								
+				                <td><button data-ng-show="thisuser.accountstatus=='Pending' || thisuser.accountstatus=='Valid'" type="button" data-ng-click="uctrl.rejectUser(thisuser)" class="btn btn-danger btn-sm">REJECT</button></td>
+							</tr>
+					
+				
+					</tbody>
+	</table>
+   
+   
+   </div>
+   
+   <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ </div>
+
+

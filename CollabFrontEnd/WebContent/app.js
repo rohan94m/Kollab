@@ -70,13 +70,21 @@ var app = angular.module('myApp',[ 'ngRoute', 'ngCookies' ])
 
 	}).
 	
-	when('/displayblog',{
-		templateUrl:'view/allblogs.html',
-		comtroller:'forumController'
+	
+	when('/admin',{
+		templateUrl:'view/admin.html'
+		
 
 
 	}).
+	
+	when('/admin/user',{
+		templateUrl:'view/adminusercontrol.html',
+		comtroller:'userController'
 
+
+	}).
+	
 
 	otherwise({redirectTo:'/home'})
 
@@ -100,4 +108,98 @@ var app = angular.module('myApp',[ 'ngRoute', 'ngCookies' ])
 
 
 
-}]);
+}])
+
+/****************Security Related*************************/
+	
+
+	.run(function($rootScope, $location, $cookieStore, $http){
+	 $rootScope.$on('$locationChangeStart', function (event, next, current) {
+		 console.log("$locationChangeStart")
+
+
+		 var loggedIn=false;
+	
+		 
+		 // Set Logged in user to rootscope from cookies, in case of page refresh
+
+		if($cookieStore.get('currentuser'))
+			{
+				$rootScope.currentuser=$cookieStore.get('currentuser');
+				console.log("Someone logged in")
+				console.log($rootScope.currentuser);
+				$http.defaults.headers.common['Authorization']='Basic'+$rootScope.currentuser;
+				loggedIn=true;
+			}
+	
+
+
+
+		  
+		 
+
+		// If any of these pages, restricedPage is 1
+
+		 var restrictedPage=$.inArray($location.path(),['/myprofile','/newblog','/admin/usercontrol','/admin','/admin/blogcontrol'])>-1;
+		
+
+
+
+		 console.log(" is restrictedPage:" +restrictedPage)
+
+	     
+		 console.log("loggedIn:"+loggedIn)
+
+
+	 	if (!loggedIn) 
+	     {
+	    	 
+	    	 if(restrictedPage) {
+	    		 console.log("Navigating to login page:");
+
+	    		 alert("You need to Login to access this page");
+	    		 
+	    		 $location.path('/login');
+	    	 }
+	    	  
+	     }
+	     else //logged in
+	    	 {
+	    	 
+	    	 var role = $rootScope.currentuser.role;
+	    	 var userRestrictedPage = $location.path().startsWith('/admin');
+	    	 
+	    	 if (userRestrictedPage && role!='Admin')
+	    		 {
+	    		 alert("You cannot do this operation as you are not logged in as: Admin")
+	    		 $location.path('/home');
+	    		 }
+	    	 }
+    	 
+});
+		
+	   
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

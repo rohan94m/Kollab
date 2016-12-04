@@ -7,7 +7,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	
 	// Signup form model
 	self.userDetails={"userId":null,"emailid":"","fullname":"","password":"","mobileno":"",
-	"isOnline":"offline","accountstatus":"valid","reason":"none","role":"","friendCount":0,"user_bio":"","user_status":""};
+	"isOnline":"offline","accountstatus":"Pending","reason":"none","role":"","friendCount":0,"user_bio":"","user_status":""};
 	
 	
 	// All users in this list
@@ -16,7 +16,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	
 	//Single user obtained 
 	self.fetcheduser={"userId":null,"emailid":"","fullname":"","password":"",
-	"mobileno":"","isOnline":"offline","accountstatus":"valid","reason":"none","role":"","friendCount":0,"user_bio":"","user_status":""};
+	"mobileno":"","isOnline":"offline","accountstatus":"Pending","reason":"none","role":"","friendCount":0,"user_bio":"","user_status":""};
 	
 	
 	//Depending on this path, controller functions are called
@@ -26,16 +26,13 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	// Latest three users in this list
 	self.latestulist=[]; 
 	
+	if($cookieStore.get('currentuser'))
+	{
+		$rootScope.currentuser=$cookieStore.get('currentuser');
+	}
 
 	
 	
-		if($cookieStore.get('currentuser'))
-			{
-				$rootScope.currentuser=$cookieStore.get('currentuser');
-				console.log($rootScope.currentuser);
-				
-				
-			}
 
 	
 	self.createUser=function(user)
@@ -136,7 +133,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	{
 	
 	    	self.userDetails={"userId":null,"emailid":"","fullname":"",
-			"password":"","mobileno":"","isOnline":"offline","accountstatus":"valid","reason":"none","role":"","friendCount":0,"user_bio":"",
+			"password":"","mobileno":"","isOnline":"offline","accountstatus":"Pending","reason":"none","role":"","friendCount":0,"user_bio":"",
 			"user_status":""};
 	        $scope.userForm.$setPristine();
 	   
@@ -217,7 +214,19 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 		.authenticateUser(user)
 		.then(function(data){
 		console.log("Valid Credentials. Navigating to home page.");
-		$location.path('/home');
+		 if($rootScope.currentuser.role=='Admin')
+			 {
+			 	$location.path('/admin');
+			 		
+			 }
+		 else
+			 {
+			 $location.path('/home');
+			 
+			 }
+		
+		
+		
 				
 			
 		},function(){
@@ -275,7 +284,56 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 
 		
 
-	}
+	};
+	
+	
+	
+	self.acceptUser=function(user)
+	{
+		user.accountstatus='Valid';
+		userService.updateUser(user)
+		.then(function(){
+			
+			alert("This user is now Accepted");
+			self.fetchAllUser();
+			
+			
+		},function(){
+			
+			alert("Couldnt Update this users status");
+			
+		})
+		
+		
+		
+	};
+	
+	
+	
+	
+	self.rejectUser=function(user)
+	{
+		user.accountstatus='Invalid';
+		userService.updateUser(user)
+		.then(function(){
+			
+			alert("This user is now Rejected");
+			self.fetchAllUser();
+			
+			
+		},function(){
+			
+			alert("Couldnt Update this users status");
+			
+		})
+		
+		
+		
+	};
+	
+	
+	
+	
 	
 	
 	
@@ -297,7 +355,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	
 	
 	
-	if(self.currentPath==('/userlist'))
+	if(self.currentPath==('/userlist') || self.currentPath==('/admin/user')  )
 		{
 		
 			self.fetchAllUser();
@@ -311,6 +369,14 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			self.fetchUser($rootScope.currentuser.userid);
 
 		}
+		
+		if(self.currentPath==('/admin/usercontrol'))
+		{
+			//Must Be Logged in
+			self.fetchAllUser();
+
+		}
+
 
 
 
