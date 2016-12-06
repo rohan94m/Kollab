@@ -5,7 +5,8 @@
         <li class="active"><a href="#/blogview">Blogs</a></li>
         <li><a href="#/userlist">People</a></li>
         
-      </ul><br>
+      </ul>
+      <br>
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Search Blog..">
         <span class="input-group-btn">
@@ -23,7 +24,7 @@
 	      <hr>
 	      <div data-ng-repeat="thisblog in fctrl.latestbloglist">
 		      <h2>{{thisblog.blog_title}}</h2>
-		      <h5><span class="glyphicon glyphicon-time"></span>&nbsp {{thisblog.date_created}}</h5>
+		      <h5><span class="glyphicon glyphicon-time"></span> &nbsp; {{thisblog.date_created}}</h5>
 		      <h5><span class="label label-danger">Food</span> <span class="label label-primary">Ipsum</span></h5><br>
 		      <br><br>
 		  	    

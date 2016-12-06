@@ -5,32 +5,56 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 	console.log("Forum controller reached");
 
 	var self=this;
+	
+	
+	
+	
+	// New BLOG model
+	
 	self.blogDetails={"blog_id":null,"blog_title":"","content":"","date_created":"", "user_id":null,"author_name":"",
 					  "category":"","comment_count":0,"shortcontent":""};
+	
+	
+	// New Comment model
 	
 	self.commentDetails={"commentId":null,"comment_content":"","upvotes":0,"downvotes":0,"user_id":null,"username":"",
 			"date_created":"", "blog":{"blog_id":null} };
 	
+	
+	// BlOG obtained from Server
+	
 	self.fetchedblog={"blog_id":null,"blog_title":"","content":"","date_created":"","user_id":null,
 						"author_name":"","category":"","comment_count":0,"shortcontent":""};
 	
+	// List of all BLOGS
+	
 	self.bloglist=[];
 
+	
+	
+	// List of BLOGS belonging to the logged in user
 	self.myblogslist=[];
 
 
+	// List of comments on a particular BLOG
 	self.commentlist=[];
 
 
-	self.blogid=0;
 	
 	
+	// currentPath is used to determine which functions are called
 	
 	self.currentPath=$location.path();
-	console.log($location.path());
+	
+	
+	// Latest three BLOGS
+	
 	self.latestbloglist=[];
 	
 
+	
+	
+	// **** BLOG CRUD Related *****
 
 
 	self.createBlog=function(blog)
@@ -144,13 +168,16 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 	   
 	};
 
+	// **** BLOG CRUD Related *****
 
-
+	
+	// **** Fetch BLOG with ID  Related *****
+	
+	
 	self.goToBlog=function(idval)
 	{
-		self.blogid=idval;
-		console.log("Blg id at goToBlog is "+self.blogid);
-		$location.path('/blog/'+this.blogid);
+	
+		$location.path('/blog/'+idval);
 	}
 
 
@@ -218,6 +245,15 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
 
 
 	}
+	
+	
+	
+	// **** Fetch BLOG Related *****
+	
+	
+	
+	
+	// **** Comment Creation Related. Comments are fetched along with the blog in fetchBlog() ********
 
 
        self.createComment=function(comment){
@@ -246,9 +282,11 @@ app.controller('forumController',['$scope', 'forumService','dummyService','$loca
         );
     };
 
+    
+    // **** Comment Creation Related. ********
 
     
-    // Calling controller functions based on $location.path 
+    // ***** Calling controller functions based on $location.path *****
     
 	if(self.currentPath=='/explore')
 	{

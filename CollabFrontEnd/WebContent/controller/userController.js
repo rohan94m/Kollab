@@ -5,7 +5,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 
 	var self=this;
 	
-	// Signup form model
+	// Sign-up form model
 	self.userDetails={"userId":null,"emailid":"","fullname":"","password":"","mobileno":"",
 	"isOnline":"offline","accountstatus":"Pending","reason":"none","role":"","friendCount":0,"user_bio":"","user_status":""};
 	
@@ -26,6 +26,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	// Latest three users in this list
 	self.latestulist=[]; 
 	
+	
 	self.isLoggedIn=false;
 	
 	
@@ -34,12 +35,19 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	self.friendslist=[];
 	
 	
+	//  Stores the status of the friend relation between the logged in user and the current user that is being viewed
+	// 	Depending on request_status in self.fetchedfriendship
+	//  Friends/Accept Request/Awaiting Confirmation/Add As A Friend
 	self.friendstatus="";
 	
+	
+	// The Friendship Object 
 	self.fetchedfriendship={"friendid":0,"sender_id":"","sender_name":"","receiver_name":"","receiver_id":"","request_status":""};
 	
 	
 	
+	
+	 
 	
 	if($cookieStore.get('currentuser'))
 	{
@@ -48,7 +56,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	}
 
 	
-	
+	// ******** User CRUD related **********
 
 	
 	self.createUser=function(user)
@@ -83,6 +91,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	
 	self.fetchAllUser=function()
 	{
+		
 		console.log("----fetchAllUser in controller reached ---- ");
 		 userService
 		.fetchAllUsers()
@@ -101,20 +110,16 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			console.error("Could not obtain user List");
 			
 			self.ulist=null;
-	
-	
-	
-	
-	
+
 		});
-	
-	
+
 	};
 	
 	
 	
 	self.fetchLatestUser=function()
 	{
+		
 		console.log("----fetchLatestUser in controller reached ---- ");
 		 userService
 		.fetchLatestUsers()
@@ -134,12 +139,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			
 			self.latestulist=null;
 	
-	
-	
-	
-	
 		});
-	
 	
 	};
 	
@@ -154,6 +154,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	        $scope.userForm.$setPristine();
 	   
 	};
+	
 	
 	self.fetchUser=function(userid)
 	{
@@ -189,12 +190,12 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	};
 	
 	
-
+	// ******** User CRUD related **********
 	
 	
 	
 
-	// must be logged in
+	// ******** User Authentication, Login/Logout  related **********
 
 	
 	self.authenticate=function(user)
@@ -229,6 +230,8 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 		
 		
 	};
+	
+	
 
 	self.logout = function() {
 				console.log("--> UserController : calling logout method.");
@@ -249,6 +252,14 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	};
 	
 	
+	
+	// ******** User Authentication, Login/Logout  related **********
+	
+	
+	
+	
+	
+	// ******** User Profile related **********
 
 
 	self.statusUpdate=function(user)
@@ -276,6 +287,11 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 
 	};
 	
+	
+	// ******** ! User Profile related **********
+	
+	
+	// ******** Administrator related **********
 	
 	
 	self.acceptUser=function(user)
@@ -315,14 +331,21 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			
 			alert("Couldnt Update this users status");
 			
-		})
+		});
 		
 		
 		
 	};
 	
 	
+	// ******** Administrator related **********
 	
+	
+	
+	
+	
+	
+	// ******** Friend related **********
 	
 	self.sendRequest=function()
 	{
@@ -338,17 +361,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			self.friendstatus='Awaiting Confirmation';		
 			
 		},function(reponse){
-			
-				
-			
-			
-			
-			
-		})
-		
-		
-		
-		
+		});
 		
 	};
 	
@@ -371,17 +384,13 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 					alert("Request Accepted");
 					self.friendstatus="Friends";
 					
-				},function(respsonse){})
+				},function(respsonse){ 
 				
 					console.log("Couldnt accept request");
-					
-			
-			
+				
+				});
+									
 			}
-		
-		
-		
-		
 	};
 	
 	
@@ -402,38 +411,14 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 					alert("Request Accepted");
 					self.fetchUser($rootScope.currentuser.userid);
 					
-				},function(respsonse){})
-				
+				},function(respsonse){
+					
 					console.log("Couldnt accept request");
 					
-			
-			
+				});
+									
 			}
-		
-		
-		
-		
 	};
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	self.getFriendsList=function()
@@ -444,27 +429,19 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			
 			self.friendslist=data;
 			console.log("Obtained Friends List");
-			console.log(self.friendslist);
-			
+			console.log(self.friendslist);			
 			console.log("Fetched user is "+self.fetcheduser.fullname);
 			console.log("Loggeind in user is "+$rootScope.currentuser.username);
 			
 			
 			if(self.fetcheduser.userId==$rootScope.currentuser.userid)
 				{
-				
-					
-				
 					console.log("User is viewing his own profile and his own friendlist is loaded");
 				
-					
-					
 				}
 			
 			else
 				{
-				
-					
 				console.log("User is viewing another and  friendship is being checked")
 				
 				self.friendstatus="Add As A Friend";
@@ -507,47 +484,26 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 							
 							self.fetchedfriendship=self.friendslist[i];
 							break;
-						
-							
 					}
-					
-									
-						
 				}
 				
-				console.log("Friend status is"+self.friendstatus);				
-				
-				
-				
-				
-				
-					
-				
-				
+				console.log("Friend status is"+self.friendstatus);	
 				}
-			
-			
-			
-			
-			
-			
 		},function(data){
 			
 			self.friendslist=[];
 			console.log("Couldnt Get Friends List");
 			
 			
-		})
-		
-		
-		
-		
-		
+		});
 	};
 	
-
+	// ***** Friend Related ****
 	
 	
+	
+	
+	// ***** Fetch User related ****
 	
 	self.fetchUserFromRouteParams=function()
 	{
@@ -567,8 +523,17 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 		$location.path('/user/'+idval);
 	}
 	
-	if(self.currentPath.startsWith('/user/'))
-	{
+	
+	// ***** Fetch User related ****
+	
+	
+	
+	
+	// ****** Calling controller functions based on $location.path ****** 
+	
+	
+	
+	if(self.currentPath.startsWith('/user/')){
 	
 		self.fetchUserFromRouteParams();
 	}
@@ -576,63 +541,39 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	
 	
 	
-	
-	
-	
-	
-	
-	// Calling controller functions based on $location.path 
-
-
-	if(self.currentPath=='/explore')
-	{
+	if(self.currentPath=='/explore'){
+		
+		
 		self.fetchLatestUser();
 
 	}
 	
-	if(self.currentPath.startsWith('/user/'))
-		{
+	
+	if(self.currentPath==('/userlist') || self.currentPath==('/admin/user')){
 		
-			//self.fetchUser();
-		}
-	
-	
-	
-	if(self.currentPath==('/userlist') || self.currentPath==('/admin/user')  )
-		{
+		
 		
 			self.fetchAllUser();
 		}
 
 		
 
-		if(self.currentPath==('/myprofile'))
-		{
-			//Must Be Logged in
+		if(self.currentPath==('/myprofile')){
+			
+			
+			
 			self.fetchUser($rootScope.currentuser.userid);
 
-		}
-		
-
+		}		
 		
 		
+		if(self.currentPath==('/admin/usercontrol'))		{
 		
-		
-		if(self.currentPath==('/admin/usercontrol'))
-		{
-			//Must Be Logged in
 			self.fetchAllUser();
 
 		}
-
-
-
-
-
-
-
-
-
-
+		
+		
+		//********* END OF CONTROLLER **********
 
 }]);
