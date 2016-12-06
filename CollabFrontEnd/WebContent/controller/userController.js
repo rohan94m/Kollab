@@ -26,9 +26,25 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	// Latest three users in this list
 	self.latestulist=[]; 
 	
+	self.isLoggedIn=false;
+	
+	
+	//Friends List
+	
+	self.friendslist=[];
+	
+	
+	self.friendstatus="";
+	
+	self.fetchedfriendship={"friendid":0,"sender_id":"","sender_name":"","receiver_name":"","receiver_id":"","request_status":""};
+	
+	
+	
+	
 	if($cookieStore.get('currentuser'))
 	{
 		$rootScope.currentuser=$cookieStore.get('currentuser');
+		self.isLoggedIn=true;
 	}
 
 	
@@ -149,7 +165,18 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			self.fetcheduser=userData;
 			console.log("User details obtained ");
 			console.log(self.fetcheduser);
+			
 
+			
+			
+			
+			
+			if(self.isLoggedIn)
+				{
+			
+					self.getFriendsList();
+				
+				}
 
 		},function(){
 
@@ -162,44 +189,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	};
 	
 	
-	self.fetchUserFromRouteParams=function()
-	{
-		
-		self.userid=$routeParams.userid;
-		console.log("Fetching user with id "+self.userid);
-		userService.
-		fetchUser(self.userid)
-		.then(function(response){
-			
-			self.fetcheduser=response;
-			console.log("Fetched user through Params is");
-			console.log(self.fetcheduser);
-			
-			
-			
-			
-		},function(){
-			
-			console.log("Couldnt fetch to controller");
-			
-		})
-	}
-	
-	
-	
-	self.goToUser=function(idval)
-	{
-		
-		console.log("usert id at goToUser is "+idval);
-		$location.path('/user/'+idval);
-	}
-	
-	if(self.currentPath.startsWith('/user/'))
-	{
-	
-		self.fetchUserFromRouteParams();
-	}
-	
+
 	
 	
 	
@@ -334,6 +324,259 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 	
 	
 	
+	self.sendRequest=function()
+	{
+		
+		var friendid=self.fetcheduser.userId;
+		userService.sendRequest(friendid)
+		
+		.then(function(reponse){
+			
+			
+			alert("Request Sent !");
+			
+			self.friendstatus='Awaiting Confirmation';		
+			
+		},function(reponse){
+			
+				
+			
+			
+			
+			
+		})
+		
+		
+		
+		
+		
+	};
+	
+	
+	
+	self.acceptRequest=function()
+	{
+		console.log("Accept Request Called");
+		console.log(self.fetchedfriendship.friendid);
+		if(self.fetchedfriendship.friendid!=0)
+			{
+			
+				self.fetchedfriendship.request_status='Accepted';
+				console.log("request is being acepted");
+				console.log(self.fetchedfriendship);
+				userService.acceptRequest(self.fetchedfriendship)
+				
+				.then(function(response){
+				
+					alert("Request Accepted");
+					self.friendstatus="Friends";
+					
+				},function(respsonse){})
+				
+					console.log("Couldnt accept request");
+					
+			
+			
+			}
+		
+		
+		
+		
+	};
+	
+	
+	self.acceptRequestFromProfile=function(friend)
+	{
+		console.log("Accept Request from profile Called");
+		console.log(friend.friendid);
+		if(friend.friendid!=0)
+			{
+			
+				friend.request_status='Accepted';
+				console.log("request is being acepted");
+				console.log(friend);
+				userService.acceptRequest(friend)
+				
+				.then(function(response){
+				
+					alert("Request Accepted");
+					self.fetchUser($rootScope.currentuser.userid);
+					
+				},function(respsonse){})
+				
+					console.log("Couldnt accept request");
+					
+			
+			
+			}
+		
+		
+		
+		
+	};
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	self.getFriendsList=function()
+	{
+		console.log("Getting Friends list for user"+$rootScope.currentuser.username);
+		userService.getFriendsList($rootScope.currentuser.userid)
+		.then(function(data){
+			
+			self.friendslist=data;
+			console.log("Obtained Friends List");
+			console.log(self.friendslist);
+			
+			console.log("Fetched user is "+self.fetcheduser.fullname);
+			console.log("Loggeind in user is "+$rootScope.currentuser.username);
+			
+			
+			if(self.fetcheduser.userId==$rootScope.currentuser.userid)
+				{
+				
+					
+				
+					console.log("User is viewing his own profile and his own friendlist is loaded");
+				
+					
+					
+				}
+			
+			else
+				{
+				
+					
+				console.log("User is viewing another and  friendship is being checked")
+				
+				self.friendstatus="Add As A Friend";
+				
+				for(var i=0;i<self.friendslist.length;i++)
+				{
+				
+					if(self.friendslist[i].sender_id == $rootScope.currentuser.userid  &&  self.friendslist[i].receiver_id==self.fetcheduser.userId)
+					{
+						
+							if(self.friendslist[i].request_status=='Accepted')
+								{
+									self.friendstatus="Friends";
+								}
+							
+							if(self.friendslist[i].request_status=='Pending')
+							{
+								self.friendstatus="Awaiting Confirmation";
+							}
+							
+							self.fetchedfriendship=self.friendslist[i];
+						
+							break;
+					}
+					
+					
+					
+					if(self.friendslist[i].receiver_id == $rootScope.currentuser.userid  &&  self.friendslist[i].sender_id==self.fetcheduser.userId)
+					{
+						
+							if(self.friendslist[i].request_status=='Accepted')
+								{
+									self.friendstatus="Friends";
+								}
+							
+							if(self.friendslist[i].request_status=='Pending')
+							{
+								self.friendstatus="Confirm Request";
+							}
+							
+							self.fetchedfriendship=self.friendslist[i];
+							break;
+						
+							
+					}
+					
+									
+						
+				}
+				
+				console.log("Friend status is"+self.friendstatus);				
+				
+				
+				
+				
+				
+					
+				
+				
+				}
+			
+			
+			
+			
+			
+			
+		},function(data){
+			
+			self.friendslist=[];
+			console.log("Couldnt Get Friends List");
+			
+			
+		})
+		
+		
+		
+		
+		
+	};
+	
+
+	
+	
+	
+	self.fetchUserFromRouteParams=function()
+	{
+		
+		var userid=$routeParams.userid;
+		console.log("Fetching user with id "+userid);
+		self.fetchUser(userid);
+	};
+	
+	
+	
+	self.goToUser=function(idval)
+	{
+	
+		
+		console.log("usert id at goToUser is "+idval);
+		$location.path('/user/'+idval);
+	}
+	
+	if(self.currentPath.startsWith('/user/'))
+	{
+	
+		self.fetchUserFromRouteParams();
+	}
+	
+	
+	
+	
+	
 	
 	
 	
@@ -347,7 +590,7 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 
 	}
 	
-	if(self.currentPath.startsWith('/blog/'))
+	if(self.currentPath.startsWith('/user/'))
 		{
 		
 			//self.fetchUser();
@@ -369,6 +612,11 @@ app.controller('userController',['$scope', 'userService','$location','$rootScope
 			self.fetchUser($rootScope.currentuser.userid);
 
 		}
+		
+
+		
+		
+		
 		
 		if(self.currentPath==('/admin/usercontrol'))
 		{

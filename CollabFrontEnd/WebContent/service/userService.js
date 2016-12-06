@@ -96,7 +96,7 @@ app.factory('userService',['$http','$q','$rootScope','$cookieStore',function($ht
                     	console.log("Authenticated");
                     
                     $rootScope.currentuser={ "userid":response.data.userId, "username":response.data.fullname,
-                    						"role":response.data.role };
+                    						"role":response.data.role,"accountstatus":response.data.accountstatus};
                     $cookieStore.put('currentuser',$rootScope.currentuser);
             		console.log('Cookies set for'+$cookieStore.get('currentuser').username);
                     
@@ -129,6 +129,72 @@ app.factory('userService',['$http','$q','$rootScope','$cookieStore',function($ht
                                 return $q.reject(errResponse);
                             }
                         );
+            },
+            
+            
+            
+            sendRequest:function(friendid){
+            	
+            	  
+                   return $http
+                               .put('http://localhost:8081/collaboration/sendrequest/'+friendid)
+                               .then(function() {
+                            	   	
+                            	   console.log("Request Sent");
+                               },
+                               function(errResponse) {
+                                   
+                            	   console.log("NO response from server");
+                            	   return $q.reject(errResponse);
+                               }
+                           );
+            	
+            	
+            	
+            	
+            },
+            
+            
+            
+            acceptRequest:function(friendship)
+            {
+            	return $http
+                	.post('http://localhost:8081/collaboration/acceptRequest',friendship)
+                	
+                	.then(function(response){
+                		
+                		return response;
+                		
+                		
+                	},function(errResponse){
+                		
+                		$q.reject(errResponse);
+                		
+                		
+                	})
+            	
+            	
+            	
+            	
+            },
+            
+                 
+            getFriendsList: function(userid)
+            {
+          	  
+                return $http
+                            .get('http://localhost:8081/collaboration/friendlist/'+userid)
+                            .then(function(response) {
+                         	   	
+                         	  return response.data;
+                            },
+                            function(errResponse) {
+                                
+                         	   console.log("NO response from server");
+                         	  return $q.reject(errResponse);
+                            }
+                        );
+            	
             }
 
 

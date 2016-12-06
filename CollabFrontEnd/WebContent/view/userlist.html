@@ -2,7 +2,7 @@
 	
 	<br>
 	<br>
-	<div data-ng-repeat="i in uctrl.ulist ">
+	<div data-ng-repeat="i in uctrl.ulist " data-ng-hide="i.accountstatus=='Pending' || i.accountstatus=='Invalid' ">
 		<div class="col-sm-4 ">
 			<a href="" data-ng-click="uctrl.goToUser(i.userId)"><img src="resources/img/avatar.png" name="aboutme" width="120" height="120" class="img-circle"></a>
 			<h3>{{i.fullname}}</h3>

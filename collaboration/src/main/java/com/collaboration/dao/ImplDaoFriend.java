@@ -45,7 +45,7 @@ public class ImplDaoFriend implements DaoFriend {
 	public List<Friendship> friendList(int userid) {
 		
 		Session session=factory.getCurrentSession();
-		String hql="FROM Friendship WHERE requestSender ="+userid+" OR requestReceiver= "+userid;
+		String hql="FROM Friendship WHERE sender_id ="+userid+" OR receiver_id= "+userid;
 		Query query= session.createQuery(hql);
 		@SuppressWarnings("unchecked")
 		List<Friendship> friendslist = (List<Friendship>)query.list();

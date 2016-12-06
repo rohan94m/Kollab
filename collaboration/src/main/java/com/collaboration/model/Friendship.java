@@ -4,12 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Friendship implements Serializable {
@@ -26,20 +23,22 @@ public class Friendship implements Serializable {
 	 @GeneratedValue(strategy=GenerationType.AUTO)
 	 private int friendid;
 	 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "requestSender", nullable = false)
-	private User requestSender;
 	 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "requestReceiver", nullable = false)
-	private User requestReceiver;
+	 @Column
+	 private int sender_id;
 	 
+	 @Column
+	 private String sender_name;
+	 
+	 @Column
+	 private int receiver_id;
+	 
+	 @Column
+	 private String receiver_name;
 	 
 	
-
-	@Column
-	 private String  request_status;
-
+	 @Column
+	 private String request_status;
 
 
 	public int getFriendid() {
@@ -47,37 +46,49 @@ public class Friendship implements Serializable {
 	}
 
 
-
 	public void setFriendid(int friendid) {
 		this.friendid = friendid;
 	}
 
 
-
-
-
-	public User getRequestSender() {
-		return requestSender;
+	public int getSender_id() {
+		return sender_id;
 	}
 
 
-
-	public void setRequestSender(User requestSender) {
-		this.requestSender = requestSender;
+	public void setSender_id(int sender_id) {
+		this.sender_id = sender_id;
 	}
 
 
-
-	public User getRequestReceiver() {
-		return requestReceiver;
+	public String getSender_name() {
+		return sender_name;
 	}
 
 
-
-	public void setRequestReceiver(User requestReceiver) {
-		this.requestReceiver = requestReceiver;
+	public void setSender_name(String sender_name) {
+		this.sender_name = sender_name;
 	}
 
+
+	public int getReceiver_id() {
+		return receiver_id;
+	}
+
+
+	public void setReceiver_id(int receiver_id) {
+		this.receiver_id = receiver_id;
+	}
+
+
+	public String getReceiver_name() {
+		return receiver_name;
+	}
+
+
+	public void setReceiver_name(String receiver_name) {
+		this.receiver_name = receiver_name;
+	}
 
 
 	public String getRequest_status() {
@@ -85,14 +96,9 @@ public class Friendship implements Serializable {
 	}
 
 
-
 	public void setRequest_status(String request_status) {
 		this.request_status = request_status;
 	}
-
-	
-	 
-	 
 	 
 	 
 	 

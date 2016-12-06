@@ -11,10 +11,14 @@
         <p>
           <span class="label label-default">{{uctrl.fetcheduser.role}}</span>
           <span class="label label-primary">{{uctrl.fetcheduser.isOnline}}</span>
-          <div data-ng-if="$root.currentuser">
-            <!-- <span class="label label-warning" ng-show="uctrl.checkFriendship()">Add as a friend</span> -->
-            <span class="label label-warning">Friends</span>
-          </div>          
+          <div data-ng-if="uctrl.isLoggedIn"> <!-- Show Friend related options only if user is logged in -->
+          	<div data-ng-if="$root.currentuser.accountstatus=='Valid'"> <!-- Logged in user must be verfied by Admin -->
+	            <span class="label label-warning"  data-ng-show="uctrl.friendstatus=='Friends'">{{uctrl.friendstatus}}</span>
+	            <a href="" class="label label-warning" data-ng-click="uctrl.sendRequest()" data-ng-show="uctrl.friendstatus=='Add As A Friend'">{{uctrl.friendstatus}}</a>
+	          	<span class="label label-warning" data-ng-show="uctrl.friendstatus=='Awaiting Confirmation'">{{uctrl.friendstatus}}</span>
+	          	<a href="" class="label label-warning" data-ng-click="uctrl.acceptRequest()" data-ng-show="uctrl.friendstatus=='Confirm Request'">{{uctrl.friendstatus}}</a>
+	     	</div>
+	      </div>          
         
       </div>
       <div class="well">
@@ -23,10 +27,16 @@
         <br/><br/>
         <div data-ng-if="uctrl.fetcheduser.user_bio==''"><br/><br/><br/><br/></div>
       </div>
-        <div class="well fade in">
+        <div class="well fade in" >
        
         <h3><strong>Friends</strong></h3>
-        <h4>90</h4>
+        <h4>{{uctrl.fetcheduser.friendCount}}</h4>
+        <br>
+        
+       
+        
+        
+        
       </div>
      
     </div>

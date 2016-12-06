@@ -58,9 +58,9 @@ public class ApplicationContextConfig {
 		sessionBuilder.addAnnotatedClass(com.collaboration.model.Friendship.class);
 		
 		sessionBuilder.setProperty("hibernate.hbm2ddl.auto","update");
-		sessionBuilder.setProperty("hibernate.show_sql","true");
+		sessionBuilder.setProperty("hibernate.show_sql","false");
 		sessionBuilder.setProperty("hibernate.dialect","org.hibernate.dialect.Oracle10gDialect");
-		sessionBuilder.setProperty("hibernate.format_sql","true");
+		sessionBuilder.setProperty("hibernate.format_sql","false");
 		sessionBuilder.setProperty("hibernate.jdbc.use_get_generated_keys","true");
 		sessionBuilder.setProperty("hibernate.enable_lazy_load_no_trans", "true");
 		

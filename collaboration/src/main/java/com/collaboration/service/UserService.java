@@ -72,28 +72,14 @@ public class UserService {
 		
 	}
 	
-	public List<User> friendList(int userid) {
+	public List<Friendship> friendList(int userid) {
 		
-		ArrayList<Friendship> f= (ArrayList<Friendship>) friendDao.friendList(userid);
+		ArrayList<Friendship> friends= (ArrayList<Friendship>) friendDao.friendList(userid);
 		
-		List<User> flist=new ArrayList<User>();
+	
 		
-		for(int i=0;i<f.size();i++)
-		{
-			
-			if(f.get(i).getRequestSender().getUserId()==userid)
-			{
-				flist.add(f.get(i).getRequestReceiver());
-			}
-			
-			else
-			{
-				flist.add(f.get(i).getRequestSender());
-			}
-			
-			
-		}
-		return flist;
+		
+		return friends;
 		
 	}
 	

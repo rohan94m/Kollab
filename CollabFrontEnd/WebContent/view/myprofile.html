@@ -14,11 +14,8 @@
         <br>
         <p>
           <span class="label label-default">{{uctrl.fetcheduser.role}}</span>
-          <span class="label label-primary">{{uctrl.fetcheduser.isOnline}}</span>
-          <div data-ng-if="$root.currentuser">
-          
-          </div>          
-        
+          <span class="label label-primary">Online</span>
+         
       </div>
       <div class="well">
         <h3><a href="#"><strong>Bio</strong></a></h3>
@@ -27,11 +24,58 @@
         <br/><br/>
         <div data-ng-if="uctrl.fetcheduser.user_bio==''"><br/><br/><br/><br/></div>
       </div>
+        
         <div class="well fade in">
        
         <h3><strong>Friends</strong></h3>
-        <h4>90</h4>
+	        <h4>{{uctrl.fetcheduser.friendCount}}</h4>
+	        
+	        <br>
+	             <div class="panel panel-primary" >
+	      
+	            <div class="panel-body panel-scroll text-left" style="max-height:400px;overflow:scroll;">
+	                    <ul>
+	                        <li class="slide" data-ng-repeat="thisfriend in uctrl.friendslist" data-ng-hide="thisfriend.request_status=='Pending'" >
+	                           
+	                        <span data-ng-hide="thisfriend.receiver_id==uctrl.fetcheduser.userId ">{{thisfriend.receiver_name}}</span>
+	                        <span data-ng-hide="thisfriend.sender_id==uctrl.fetcheduser.userId">{{thisfriend.sender_name}}</span>
+	                        </li>   
+	                    </ul>
+	            </div>
+	      </div> 
+        
       </div>
+      
+      
+      
+       <div class="well fade in">
+       
+		        <h3><strong>Pending Requests</strong></h3>
+		     
+		        
+		        <br>
+		             <div class="panel panel-primary" >
+		      
+		            <div class="panel-body panel-scroll text-left" style="max-height:400px;overflow:scroll;">
+		                    <ul>
+		                        <li class="slide" data-ng-repeat="thisfriend in uctrl.friendslist" data-ng-hide="thisfriend.request_status=='Accepted'" >
+		                           
+		                         <span data-ng-hide="thisfriend.receiver_id==uctrl.fetcheduser.userId">{{thisfriend.receiver_name}}</span>
+		                         <span data-ng-hide="thisfriend.sender_id==uctrl.fetcheduser.userId">{{thisfriend.sender_name}} <a  href="" class="btn  btn-sm" data-ng-click="uctrl.acceptRequestFromProfile(thisfriend)"><span class="glyphicon glyphicon-ok"></span></a></span>  
+		                        </li>   
+		                    </ul>
+		            </div>
+		      </div> 
+        
+      </div>
+      
+      
+      
+      
+      
+      
+      
+      
      
     </div>
     <div class="col-sm-8">
@@ -98,7 +142,7 @@
       <br>
       <br>
       
-         <a href="#" class="btn btn-info btn-lg" data-ng-disabled="uctrl.fetcheduser.accountstatus=='Invalid' || uctrl.fetcheduser.accountstatus=='Pending' ">
+         <a href="#/newblog" class="btn btn-info btn-lg" data-ng-disabled="uctrl.fetcheduser.accountstatus=='Invalid' || uctrl.fetcheduser.accountstatus=='Pending' ">
           <span class="glyphicon glyphicon-plus-sign"></span> Create a new Blog
         </a>
       
