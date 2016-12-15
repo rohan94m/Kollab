@@ -9,10 +9,8 @@
 - New user registrations
 - Blogs
 - Blog comments
-- Groups
-- Chat/Messaging
 - Security
-- User profiles with multipart image and wall posts
+- User profiles with status
 - Friend Request (adding and removing)
 
 
